@@ -1,35 +1,6 @@
-/*****************************************
- * VIDEO IMPOSTOR - MVP FUNCIONAL
- *****************************************/
+// CONEXIÓN AL BACKEND (CEREBRO ÚNICO)
+const socket = io("https://video-impostor-server.onrender.com");
 
-// ================================
-// PALABRAS
-// ================================
-const palabras = [
-  "Avión","Playa","Hospital","Escuela","Universidad",
-  "Restaurante","Banco","Iglesia","Hotel","Cine",
-  "Parque","Montaña","Río","Ciudad","Biblioteca",
-  "Carro","Autobús","Bicicleta","Barco","Tren",
-  "Celular","Computadora","Televisión","Cámara",
-  "Mesa","Silla","Cama",
-  "Doctor","Profesor","Policía","Bombero",
-  "Pizza","Hamburguesa","Arroz","Pan",
-  "Café","Agua","Helado",
-  "Fútbol","Béisbol","Tenis",
-  "Fiesta","Cumpleaños","Viaje",
-  "WhatsApp","Instagram","YouTube",
-  "Trabajo","Familia","Amigos","Sol","Lluvia"
-];
-
-// ================================
-// ESTADO DEL JUEGO
-// ================================
-let palabraActual = "";
-let rolActual = "";
-
-// ================================
-// UTILIDADES
-// ================================
 function showScreen(id) {
   document.querySelectorAll(".screen").forEach(s =>
     s.classList.remove("active")
@@ -37,34 +8,28 @@ function showScreen(id) {
   document.getElementById(id).classList.add("active");
 }
 
-// ================================
-// ENTRAR AL JUEGO (BOTÓN VERDE)
-// ================================
 function entrarJuego() {
+  socket.emit("join-game");
+}
 
-  // Elegir palabra
-  palabraActual = palabras[Math.floor(Math.random() * palabras.length)];
+socket.on("role", (data) => {
+  const title = document.getElementById("roleTitle");
+  const text = document.getElementById("roleText");
 
-  // 1 impostor cada 5 aprox (simple)
-  rolActual = Math.random() < 0.2 ? "IMPOSTOR" : "CIUDADANO";
-
-  const roleTitle = document.getElementById("roleTitle");
-  const roleText = document.getElementById("roleText");
-
-  if (rolActual === "IMPOSTOR") {
-    roleTitle.innerText = "🔴 ERES EL IMPOSTOR";
-    roleText.innerHTML = `
+  if (data.rol === "IMPOSTOR") {
+    title.innerText = "🔴 ERES EL IMPOSTOR";
+    text.innerHTML = `
       <span style="font-size:42px;color:#ff5252;">
         IMPOSTOR
       </span><br><br>
       Finge que conoces la palabra.
     `;
   } else {
-    roleTitle.innerText = "🟢 Eres Ciudadano";
-    roleText.innerHTML = `
+    title.innerText = "🟢 Eres Ciudadano";
+    text.innerHTML = `
       La palabra es:<br>
       <span style="font-size:42px;color:#00e676;">
-        ${palabraActual}
+        ${data.palabra}
       </span>
     `;
   }
@@ -72,31 +37,10 @@ function entrarJuego() {
   showScreen("role");
 }
 
-// ================================
-// FIN DE RONDA
-// ================================
-function finishRound() {
-  showScreen("end");
-}
-
-// ================================
-// REVELAR
-// ================================
-function reveal() {
-  document.getElementById("revealText").innerHTML = `
-    🔍 El impostor era quien <b>NO conocía</b> la palabra:<br><br>
-    <span style="font-size:28px;color:#00e676;">
-      ${palabraActual}
-    </span>
-  `;
-}
-
-// ================================
-// NUEVA RONDA
-// ================================
-function newRound() {
-  palabraActual = "";
-  rolActual = "";
-  document.getElementById("revealText").innerText = "";
+// SOLO EL HOST DEBERÍA USAR ESTO (más adelante)
+function nuevaRonda() {
+  socket.emit("reset-round");
   showScreen("welcome");
 }
+
+
