@@ -1,43 +1,31 @@
 /*****************************************
- * VIDEO IMPOSTOR - MODO ANFITRIÓN
+ * VIDEO IMPOSTOR - MVP FUNCIONAL
  *****************************************/
 
 // ================================
-// CONFIGURACIÓN GENERAL
+// PALABRAS
 // ================================
 const palabras = [
-  "Avión","Aeropuerto","Playa","Hospital","Escuela","Universidad",
-  "Restaurante","Supermercado","Banco","Iglesia","Hotel","Cine",
-  "Estadio","Parque","Carretera","Puente","Montaña","Río","Lago",
-  "Bosque","Ciudad","Isla","Puerto","Oficina","Biblioteca",
-  "Carro","Autobús","Taxi","Motocicleta","Bicicleta","Barco",
-  "Helicóptero","Tren","Camión",
-  "Celular","Computadora","Televisión","Reloj","Cámara","Micrófono",
-  "Mochila","Llave","Puerta","Mesa","Silla","Cama",
-  "Doctor","Profesor","Policía","Bombero","Piloto","Cocinero",
-  "Programador","Pastor","Cantante","Actor",
-  "Pizza","Hamburguesa","Arroz","Pollo","Pescado","Pan",
-  "Café","Jugo","Agua","Helado",
-  "Fútbol","Baloncesto","Béisbol","Tenis",
-  "Fiesta","Boda","Cumpleaños","Viaje","Vacaciones",
-  "WhatsApp","Instagram","YouTube","TikTok","Internet",
-  "Trabajo","Familia","Amigos","Clima","Sol","Lluvia"
+  "Avión","Playa","Hospital","Escuela","Universidad",
+  "Restaurante","Banco","Iglesia","Hotel","Cine",
+  "Parque","Montaña","Río","Ciudad","Biblioteca",
+  "Carro","Autobús","Bicicleta","Barco","Tren",
+  "Celular","Computadora","Televisión","Cámara",
+  "Mesa","Silla","Cama",
+  "Doctor","Profesor","Policía","Bombero",
+  "Pizza","Hamburguesa","Arroz","Pan",
+  "Café","Agua","Helado",
+  "Fútbol","Béisbol","Tenis",
+  "Fiesta","Cumpleaños","Viaje",
+  "WhatsApp","Instagram","YouTube",
+  "Trabajo","Familia","Amigos","Sol","Lluvia"
 ];
 
 // ================================
 // ESTADO DEL JUEGO
 // ================================
-let rolesBolsa = [];
 let palabraActual = "";
-let esHost = false;
-
-// ================================
-// DETECTAR HOST
-// ================================
-function detectarHost() {
-  const params = new URLSearchParams(window.location.search);
-  esHost = params.get("host") === "1";
-}
+let rolActual = "";
 
 // ================================
 // UTILIDADES
@@ -49,86 +37,21 @@ function showScreen(id) {
   document.getElementById(id).classList.add("active");
 }
 
-function mezclar(array) {
-  for (let i = array.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]];
-  }
-}
-
 // ================================
-// INICIALIZAR
+// ENTRAR AL JUEGO (BOTÓN VERDE)
 // ================================
-window.onload = () => {
-  detectarHost();
-
-  if (esHost) {
-    document.getElementById("hostPanel").style.display = "block";
-  } else {
-    document.getElementById("hostPanel").style.display = "none";
-  }
-};
-
-// ================================
-// INICIAR RONDA (SOLO HOST)
-// ================================
-function iniciarRonda() {
-  if (!esHost) return;
-
-  const totalJugadores = parseInt(
-    document.getElementById("totalPlayers").value
-  );
-  const totalImpostores = parseInt(
-    document.getElementById("totalImpostors").value
-  );
-
-  if (totalJugadores < 2) {
-    alert("Debe haber al menos 2 jugadores.");
-    return;
-  }
-
-  if (totalImpostores >= totalJugadores) {
-    alert("Debe haber menos impostores que jugadores.");
-    return;
-  }
-
-  // Crear bolsa de roles
-  rolesBolsa = [];
-
-  for (let i = 0; i < totalImpostores; i++) {
-    rolesBolsa.push("IMPOSTOR");
-  }
-
-  for (let i = totalImpostores; i < totalJugadores; i++) {
-    rolesBolsa.push("CIUDADANO");
-  }
-
-  mezclar(rolesBolsa);
+function entrarJuego() {
 
   // Elegir palabra
   palabraActual = palabras[Math.floor(Math.random() * palabras.length)];
 
-  alert("Ronda iniciada. Los jugadores pueden entrar.");
-
-  showScreen("welcome");
-}
-
-// ================================
-// ENTRAR AL JUEGO (JUGADORES)
-// ================================
-function entrarJuego() {
-
-  if (rolesBolsa.length === 0) {
-    alert("La partida ya está completa.");
-    return;
-  }
-
-  const rol = rolesBolsa.shift();
+  // 1 impostor cada 5 aprox (simple)
+  rolActual = Math.random() < 0.2 ? "IMPOSTOR" : "CIUDADANO";
 
   const roleTitle = document.getElementById("roleTitle");
   const roleText = document.getElementById("roleText");
 
-  if (rol === "IMPOSTOR") {
+  if (rolActual === "IMPOSTOR") {
     roleTitle.innerText = "🔴 ERES EL IMPOSTOR";
     roleText.innerHTML = `
       <span style="font-size:42px;color:#ff5252;">
@@ -157,7 +80,7 @@ function finishRound() {
 }
 
 // ================================
-// REVELAR IMPOSTOR
+// REVELAR
 // ================================
 function reveal() {
   document.getElementById("revealText").innerHTML = `
@@ -172,8 +95,8 @@ function reveal() {
 // NUEVA RONDA
 // ================================
 function newRound() {
-  rolesBolsa = [];
   palabraActual = "";
+  rolActual = "";
   document.getElementById("revealText").innerText = "";
   showScreen("welcome");
 }
