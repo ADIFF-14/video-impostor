@@ -10,7 +10,7 @@
 
 <div id="app">
 
-  <!-- Pantalla Bienvenida -->
+  <!-- PANTALLA BIENVENIDA -->
   <section id="welcome" class="screen active">
     <h1>👋 Hola, soy Anderson</h1>
     <p>Bienvenido a <b>VideoImpostor</b></p>
@@ -18,18 +18,17 @@
       🎥 Mantén tu videollamada abierta<br>
       🗳️ La votación se hace por el chat de Google Meet
     </p>
-    <!-- AQUÍ ESTABA EL ERROR: ahora llama a entrarJuego -->
     <button onclick="entrarJuego()">Entrar al juego</button>
   </section>
 
-  <!-- Pantalla Rol -->
+  <!-- PANTALLA ROL -->
   <section id="role" class="screen">
     <h2 id="roleTitle"></h2>
     <p id="roleText"></p>
     <button onclick="finishRound()">Listo</button>
   </section>
 
-  <!-- Pantalla Final -->
+  <!-- PANTALLA FINAL -->
   <section id="end" class="screen">
     <h2>🕵️ Fin de la ronda</h2>
     <p>¿Listos para descubrir la verdad?</p>
@@ -40,6 +39,12 @@
 
 </div>
 
+<!-- SOCKET.IO (OBLIGATORIO) -->
+<script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+
+<!-- TU SCRIPT -->
 <script src="script.js"></script>
+
 </body>
 </html>
+
