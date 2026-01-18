@@ -1,10 +1,4 @@
-const palabras = [
-  "Pan",
-  "Ciudad",
-  "Avión",
-  "Playa",
-  "Hospital"
-];
+const socket = io("https://video-impostor-server.onrender.com");
 
 function show(id) {
   document.querySelectorAll(".screen").forEach(s =>
@@ -13,16 +7,17 @@ function show(id) {
   document.getElementById(id).classList.add("active");
 }
 
-function entrarJuego() {
-  const palabra = palabras[Math.floor(Math.random() * palabras.length)];
-
-  document.getElementById("roleTitle").innerText = "Tu palabra";
-  document.getElementById("roleText").innerText = palabra;
-
-  show("role");
+function entrar() {
+  socket.emit("join");
 }
+
+socket.on("palabra", (p) => {
+  document.getElementById("palabra").innerText = p;
+  show("game");
+});
 
 function volver() {
   show("welcome");
 }
+
 
