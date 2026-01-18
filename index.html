@@ -11,21 +11,24 @@
 <div id="app">
 
   <section id="welcome" class="screen active">
-    <h1>👋 Hola</h1>
-    <p>Bienvenido a VideoImpostor</p>
-    <button onclick="entrarJuego()">Entrar al juego</button>
+    <h1>VideoImpostor</h1>
+    <button onclick="entrar()">Entrar</button>
   </section>
 
-  <section id="role" class="screen">
-    <h2 id="roleTitle"></h2>
-    <p id="roleText"></p>
+  <section id="game" class="screen">
+    <h2>Tu palabra</h2>
+    <p id="palabra"></p>
     <button onclick="volver()">Volver</button>
   </section>
 
 </div>
 
+<script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
 <script src="script.js"></script>
+
 </body>
 </html>
+
+
 
 
