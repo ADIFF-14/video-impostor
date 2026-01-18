@@ -1,50 +1,31 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <title>VideoImpostor</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="style.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <div id="app">
 
-  <!-- PANTALLA BIENVENIDA -->
   <section id="welcome" class="screen active">
-    <h1>👋 Hola, soy Anderson</h1>
-    <p>Bienvenido a <b>VideoImpostor</b></p>
-    <p class="note">
-      🎥 Mantén tu videollamada abierta<br>
-      🗳️ La votación se hace por el chat de Google Meet
-    </p>
+    <h1>👋 Hola</h1>
+    <p>Bienvenido a VideoImpostor</p>
     <button onclick="entrarJuego()">Entrar al juego</button>
   </section>
 
-  <!-- PANTALLA ROL -->
   <section id="role" class="screen">
     <h2 id="roleTitle"></h2>
     <p id="roleText"></p>
-    <button onclick="finishRound()">Listo</button>
-  </section>
-
-  <!-- PANTALLA FINAL -->
-  <section id="end" class="screen">
-    <h2>🕵️ Fin de la ronda</h2>
-    <p>¿Listos para descubrir la verdad?</p>
-    <button onclick="reveal()">🔍 Revelar impostor</button>
-    <p id="revealText"></p>
-    <button onclick="newRound()">🔁 Nueva ronda</button>
+    <button onclick="volver()">Volver</button>
   </section>
 
 </div>
 
-<!-- SOCKET.IO (OBLIGATORIO) -->
-<script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
-
-<!-- TU SCRIPT -->
 <script src="script.js"></script>
-
 </body>
 </html>
+
 
